@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
 
+enum SlideDirection { left, right }
+
 class DragableWidget extends StatefulWidget {
-  const DragableWidget({super.key});
+  const DragableWidget({
+    super.key,
+    required this.child,
+    this.onSlideOut,
+    required this.onPressed,
+    required this.isEnableDrag,
+  });
+
+  final Widget child;
+  final ValueChanged<SlideDirection>? onSlideOut;
+  final VoidCallback onPressed;
+  final bool isEnableDrag;
 
   @override
   State<DragableWidget> createState() => _DragableWidgetState();
