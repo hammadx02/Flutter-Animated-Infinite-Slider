@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:vice_app/core/shared/domain/entities/magazine.dart';
 import 'package:vice_app/core/shared/presentation/widgets/magazine_cover_image.dart';
 
 class InfiniteDragableSlider extends StatefulWidget {
@@ -23,8 +22,9 @@ class InfiniteDragableSlider extends StatefulWidget {
 class _InfiniteDragableSliderState extends State<InfiniteDragableSlider> {
   Offset getOffset(int stackIndex) {
     return {
-          0: Offset(-70, 30),
-          1: Offset(70, 30),
+          0: Offset(0, 30),
+          1: Offset(-70, 30),
+          2: Offset(70, 30),
         }[stackIndex] ??
         Offset(0, 0);
   }
@@ -36,7 +36,7 @@ class _InfiniteDragableSliderState extends State<InfiniteDragableSlider> {
         4,
         (stackIndex) {
           return Transform.translate(
-            offset: Offset(-70, 30),
+            offset: getOffset(stackIndex),
             child: Transform.scale(
               scale: 0.6,
               child: Transform.rotate(
