@@ -24,7 +24,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/img/samples/
     - assets/img/vice/
 # name: vice_app
 # description: "A new Flutter project."

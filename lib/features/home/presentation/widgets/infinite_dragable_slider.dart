@@ -6,11 +6,11 @@ import 'package:vice_app/features/home/presentation/widgets/dragable_widget.dart
 
 class InfiniteDragableSlider extends StatefulWidget {
   const InfiniteDragableSlider({
-    super.key,
+    Key? key,
     required this.itemBuilder,
     required this.itemCount,
     this.index = 0,
-  });
+  }) : super(key: key);
 
   final Function(BuildContext context, int index) itemBuilder;
   final int itemCount;
@@ -35,23 +35,28 @@ class _InfiniteDragableSliderState extends State<InfiniteDragableSlider>
           1: Offset(lerpDouble(-70, 70, controller.value)!, 30),
           2: Offset(70, 30) * (1 - controller.value),
         }[stackIndex] ??
-        Offset(MediaQuery.of(context).size.width * controller.value, 0);
+        Offset(
+            MediaQuery.of(context).size.width *
+                controller.value *
+                (slideDirection == SlideDirection.left ? -1 : 0),
+            0);
   }
 
   double getAngle(int stackIndex) {
     return {
-          0: 0.0,
-          1: -defaultAngle18Degree,
-          2: defaultAngle18Degree,
+          0: lerpDouble(0, -defaultAngle18Degree, controller.value),
+          1: lerpDouble(
+              defaultAngle18Degree, -defaultAngle18Degree, controller.value),
+          2: lerpDouble(-defaultAngle18Degree, 0, controller.value),
         }[stackIndex] ??
         0.0;
   }
 
   double getScale(int stackIndex) {
     return {
-          0: 0.6,
-          1: 0.9,
-          2: 0.95,
+          0: lerpDouble(0.6, 0.9, controller.value),
+          1: lerpDouble(0.9, 0.95, controller.value),
+          2: lerpDouble(0.95, 1, controller.value),
         }[stackIndex] ??
         1.0;
   }
@@ -96,6 +101,7 @@ class _InfiniteDragableSliderState extends State<InfiniteDragableSlider>
       animation: controller,
       builder: (context, _) {
         return Stack(
+          alignment: Alignment.center,
           children: List.generate(
             4,
             (stackIndex) {

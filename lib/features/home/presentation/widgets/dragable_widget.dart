@@ -6,12 +6,12 @@ enum SlideDirection { left, right }
 
 class DragableWidget extends StatefulWidget {
   const DragableWidget({
-    super.key,
+    Key? key,
     required this.child,
     this.onSlideOut,
     this.onPressed,
     required this.isEnableDrag,
-  });
+  }) : super(key: key);
 
   final Widget child;
   final ValueChanged<SlideDirection>? onSlideOut;
@@ -65,7 +65,7 @@ class _DragableWidgetState extends State<DragableWidget>
       itWasMadeSlide = widget.onSlideOut != null;
       widget.onSlideOut?.call(SlideDirection.left);
     }
-    if (velocitX < 1000 || positionX > (screenSize.width - outSizeLimit)) {
+    if (velocitX > 1000 || positionX > (screenSize.width - outSizeLimit)) {
       itWasMadeSlide = widget.onSlideOut != null;
       widget.onSlideOut?.call(SlideDirection.right);
     }
@@ -147,6 +147,7 @@ class _DragableWidgetState extends State<DragableWidget>
             ),
           );
         },
+        child: child,
       ),
     );
   }
