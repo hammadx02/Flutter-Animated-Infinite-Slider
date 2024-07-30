@@ -20,7 +20,14 @@ class DragableWidget extends StatefulWidget {
   State<DragableWidget> createState() => _DragableWidgetState();
 }
 
-class _DragableWidgetState extends State<DragableWidget> {
+class _DragableWidgetState extends State<DragableWidget>
+    with SingleTickerProviderStateMixin {
+  late AnimationController restoreController;
+
+  final _widgetKey = GlobalKey();
+  Offset startOffset = Offset.zero;
+  Offset panOffset = Offset.zero;
+  double angle = 0;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
