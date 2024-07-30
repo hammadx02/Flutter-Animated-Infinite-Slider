@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:vice_app/features/home/presentation/widgets/dragable_widget.dart';
@@ -30,11 +31,11 @@ class _InfiniteDragableSliderState extends State<InfiniteDragableSlider>
 
   Offset getOffset(int stackIndex) {
     return {
-          0: Offset(0, 30),
-          1: Offset(-70, 30),
-          2: Offset(70, 30),
+          0: Offset(lerpDouble(0, -70, controller.value)!, 30),
+          1: Offset(lerpDouble(-70, 70, controller.value)!, 30),
+          2: Offset(70, 30) * (1 - controller.value),
         }[stackIndex] ??
-        Offset(0, 0);
+        Offset(MediaQuery.of(context).size.width * controller.value, 0);
   }
 
   double getAngle(int stackIndex) {
