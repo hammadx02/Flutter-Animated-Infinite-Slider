@@ -39,6 +39,15 @@ class _InfiniteDragableSliderState extends State<InfiniteDragableSlider> {
         0.0;
   }
 
+  double getScale(int stackIndex) {
+    return {
+          0: 0.6,
+          1: 0.9,
+          2: 0.95,
+        }[stackIndex] ??
+        1.0;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -48,7 +57,7 @@ class _InfiniteDragableSliderState extends State<InfiniteDragableSlider> {
           return Transform.translate(
             offset: getOffset(stackIndex),
             child: Transform.scale(
-              scale: 0.6,
+              scale: getScale(stackIndex),
               child: Transform.rotate(
                 angle: getAngle(stackIndex),
                 child: MagazineCoverImage(
