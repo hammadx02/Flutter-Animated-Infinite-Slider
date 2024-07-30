@@ -29,6 +29,22 @@ class _DragableWidgetState extends State<DragableWidget>
   Offset panOffset = Offset.zero;
   double angle = 0;
 
+  void onPanStart(DragStartDetails details) {
+    if (!restoreController.isAnimating) {
+      setState(() {
+        startOffset = details.globalPosition;
+      });
+    }
+  }
+
+  void onPanUpdate(DragUpdateDetails details) {
+    if (!restoreController.isAnimating) {
+      setState(() {
+        panOffset = details.globalPosition - startOffset;
+      });
+    }
+  }
+
   @override
   void initState() {
     restoreController =
@@ -50,16 +66,8 @@ class _DragableWidgetState extends State<DragableWidget>
     );
     if (!widget.isEnableDrag) return child;
     return GestureDetector(
-      onPanStart: (details) {
-        setState(() {
-          startOffset = details.globalPosition;
-        });
-      },
-      onPanUpdate: (details) {
-        setState(() {
-          panOffset = details.globalPosition - startOffset;
-        });
-      },
+      onPanStart: onPanStart,
+      onPanUpdate: onPanUpdate,
       child: Transform.translate(
         offset: panOffset,
         child: child,
