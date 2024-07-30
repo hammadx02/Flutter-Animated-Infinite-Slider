@@ -23,6 +23,7 @@ class DragableWidget extends StatefulWidget {
 class _DragableWidgetState extends State<DragableWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController restoreController;
+  late Size screenSize;
 
   final _widgetKey = GlobalKey();
   Offset startOffset = Offset.zero;
@@ -61,6 +62,10 @@ class _DragableWidgetState extends State<DragableWidget>
       widget.onSlideOut?.call(SlideDirection.left);
       print('Slide left');
     }
+    if (velocitX < 1000) {
+      widget.onSlideOut?.call(SlideDirection.right);
+      print('Slide right');
+    }
     restoreController.forward();
   }
 
@@ -90,6 +95,7 @@ class _DragableWidgetState extends State<DragableWidget>
         AnimationController(vsync: this, duration: kThemeAnimationDuration)
           ..addListener(restoreAnimationListner);
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      screenSize = MediaQuery.of(context).size;
       getChildSize();
     });
     super.initState();
