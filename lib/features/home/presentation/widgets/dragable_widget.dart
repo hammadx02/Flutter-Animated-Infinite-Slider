@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 enum SlideDirection { left, right }
@@ -73,6 +75,8 @@ class _DragableWidgetState extends State<DragableWidget>
     if (restoreController.isCompleted) {
       restoreController.reset();
       panOffset = Offset.zero;
+      itWasMadeSlide = false;
+      angle = 0;
       setState(() {});
     }
   }
@@ -87,6 +91,16 @@ class _DragableWidgetState extends State<DragableWidget>
     final renderBox =
         _widgetKey.currentContext?.findRenderObject() as RenderBox?;
     return renderBox?.localToGlobal(Offset.zero) ?? Offset.zero;
+  }
+
+  double get currentAngle {
+    return currentPosition.dx < 0
+        ? (pi * 0.2) * currentPosition.dx / size.width
+        : currentPosition.dx + size.width > screenSize.width
+            ? (pi * 0.2) *
+                (currentPosition.dx + size.width - screenSize.width) /
+                size.width
+            : 0;
   }
 
   @override
