@@ -63,6 +63,10 @@ class _InfiniteDragableSliderState extends State<InfiniteDragableSlider>
     }
   }
 
+  void onSlideOut(SlideDirection direction) {
+    controller.forward();
+  }
+
   @override
   void initState() {
     index = widget.index;
