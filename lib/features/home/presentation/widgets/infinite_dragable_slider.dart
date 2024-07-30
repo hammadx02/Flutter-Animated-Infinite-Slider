@@ -25,6 +25,9 @@ class _InfiniteDragableSliderState extends State<InfiniteDragableSlider>
 
   late AnimationController controller;
   late int index;
+
+  SlideDirection slideDirection = SlideDirection.left;
+
   Offset getOffset(int stackIndex) {
     return {
           0: Offset(0, 30),
@@ -65,6 +68,7 @@ class _InfiniteDragableSliderState extends State<InfiniteDragableSlider>
   }
 
   void onSlideOut(SlideDirection direction) {
+    slideDirection = direction;
     controller.forward();
   }
 
@@ -79,33 +83,40 @@ class _InfiniteDragableSliderState extends State<InfiniteDragableSlider>
 
   @override
   void dispose() {
-    controller..removeListener(animationListener);
+    controller
+      ..removeListener(animationListener)
+      ..dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: List.generate(
-        4,
-        (stackIndex) {
-          final modIndex = (index + 3 - stackIndex) % widget.itemCount;
-          return Transform.translate(
-            offset: getOffset(stackIndex),
-            child: Transform.scale(
-              scale: getScale(stackIndex),
-              child: Transform.rotate(
-                angle: getAngle(stackIndex),
-                child: DragableWidget(
-                  onSlideOut: onSlideOut,
-                  child: widget.itemBuilder(context, modIndex),
-                  isEnableDrag: stackIndex == 3,
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (context, _) {
+        return Stack(
+          children: List.generate(
+            4,
+            (stackIndex) {
+              final modIndex = (index + 3 - stackIndex) % widget.itemCount;
+              return Transform.translate(
+                offset: getOffset(stackIndex),
+                child: Transform.scale(
+                  scale: getScale(stackIndex),
+                  child: Transform.rotate(
+                    angle: getAngle(stackIndex),
+                    child: DragableWidget(
+                      onSlideOut: onSlideOut,
+                      child: widget.itemBuilder(context, modIndex),
+                      isEnableDrag: stackIndex == 3,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          );
-        },
-      ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }
