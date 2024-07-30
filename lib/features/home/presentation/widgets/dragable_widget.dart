@@ -7,13 +7,13 @@ class DragableWidget extends StatefulWidget {
     super.key,
     required this.child,
     this.onSlideOut,
-    required this.onPressed,
+    this.onPressed,
     required this.isEnableDrag,
   });
 
   final Widget child;
   final ValueChanged<SlideDirection>? onSlideOut;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final bool isEnableDrag;
 
   @override
@@ -23,6 +23,8 @@ class DragableWidget extends StatefulWidget {
 class _DragableWidgetState extends State<DragableWidget> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return GestureDetector(
+      child: widget.child,
+    );
   }
 }
