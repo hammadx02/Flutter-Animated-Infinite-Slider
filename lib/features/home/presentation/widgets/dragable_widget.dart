@@ -44,6 +44,11 @@ class _DragableWidgetState extends State<DragableWidget>
 
   @override
   Widget build(BuildContext context) {
+    final child = SizedBox(
+      key: _widgetKey,
+      child: widget.child,
+    );
+    if (!widget.isEnableDrag) return child;
     return GestureDetector(
       onPanStart: (details) {
         setState(() {
@@ -57,7 +62,7 @@ class _DragableWidgetState extends State<DragableWidget>
       },
       child: Transform.translate(
         offset: panOffset,
-        child: widget.child,
+        child: child,
       ),
     );
   }
