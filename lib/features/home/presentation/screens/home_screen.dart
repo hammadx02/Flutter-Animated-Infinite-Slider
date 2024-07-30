@@ -76,16 +76,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ),
             SizedBox(height: 12),
             Expanded(
-              child: Transform.translate(
-                offset: Offset(-70, 30),
-                child: Transform.scale(
-                  scale: 0.6,
-                  child: Transform.rotate(
-                    angle: - pi * 0.1,
-                    child: MagazineCoverImage(
-                      magazine: Magazine.fakeMagazinesValues[0],
-                    ),
-                  ),
+              child: Stack(
+                children: List.generate(
+                  4,
+                  (stackIndex) {
+                    return Transform.translate(
+                      offset: Offset(-70, 30),
+                      child: Transform.scale(
+                        scale: 0.6,
+                        child: Transform.rotate(
+                          angle: -pi * 0.1,
+                          child: MagazineCoverImage(
+                            magazine: Magazine.fakeMagazinesValues[0],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
