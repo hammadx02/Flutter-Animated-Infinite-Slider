@@ -76,9 +76,15 @@ class _DragableWidgetState extends State<DragableWidget>
       onPanStart: onPanStart,
       onPanUpdate: onPanUpdate,
       onPanEnd: onPanEnd,
-      child: Transform.translate(
-        offset: panOffset,
-        child: child,
+      child: AnimatedBuilder(
+        animation: restoreController,
+        builder: (context, child) {
+          final value = 1 - restoreController.value;
+          return Transform.translate(
+            offset: panOffset,
+            child: child,
+          );
+        },
       ),
     );
   }
