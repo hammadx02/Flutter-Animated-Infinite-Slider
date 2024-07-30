@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 color: Colors.white,
               ),
             ),
-            SizedBox(height: 12),
+            SizedBox(height: 24),
             Expanded(
               child: InfiniteDragableSlider(
                 itemCount: Magazine.fakeMagazinesValues.length,
@@ -82,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ),
               ),
             ),
-            SizedBox(height: 52),
+            SizedBox(height: 72),
             SizedBox(
               height: 140,
               child: AllEditionsListView(magazines: magazines),
