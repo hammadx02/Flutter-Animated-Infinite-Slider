@@ -52,6 +52,25 @@ class _InfiniteDragableSliderState extends State<InfiniteDragableSlider>
         1.0;
   }
 
+  void animationListener() {
+    if (controller.isCompleted) {
+      setState(() {
+        if (widget.itemCount == ++index) {
+          index = 0;
+        }
+      });
+      controller.reset();
+    }
+  }
+
+  @override
+  void initState() {
+    index = widget.index;
+    controller =
+        AnimationController(vsync: this, duration: kThemeAnimationDuration);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
