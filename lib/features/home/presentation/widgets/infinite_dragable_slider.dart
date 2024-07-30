@@ -19,8 +19,12 @@ class InfiniteDragableSlider extends StatefulWidget {
   State<InfiniteDragableSlider> createState() => _InfiniteDragableSliderState();
 }
 
-class _InfiniteDragableSliderState extends State<InfiniteDragableSlider> {
+class _InfiniteDragableSliderState extends State<InfiniteDragableSlider>
+    with SingleTickerProviderStateMixin {
   final double defaultAngle18Degree = -pi * 0.1;
+
+  late AnimationController controller;
+  late int index;
   Offset getOffset(int stackIndex) {
     return {
           0: Offset(0, 30),
@@ -61,6 +65,7 @@ class _InfiniteDragableSliderState extends State<InfiniteDragableSlider> {
               child: Transform.rotate(
                 angle: getAngle(stackIndex),
                 child: DragableWidget(
+                  onSlideOut: onSlideOut,
                   child: widget.itemBuilder(context, stackIndex),
                   isEnableDrag: stackIndex == 3,
                 ),

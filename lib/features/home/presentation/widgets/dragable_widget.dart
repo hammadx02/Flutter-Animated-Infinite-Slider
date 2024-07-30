@@ -49,6 +49,7 @@ class _DragableWidgetState extends State<DragableWidget>
     if (!restoreController.isAnimating) {
       setState(() {
         panOffset = details.globalPosition - startOffset;
+        angle = currentAngle;
       });
     }
   }
@@ -140,7 +141,10 @@ class _DragableWidgetState extends State<DragableWidget>
           final value = 1 - restoreController.value;
           return Transform.translate(
             offset: panOffset * value,
-            child: child,
+            child: Transform.rotate(
+              angle: angle * (itWasMadeSlide ? 1 : value),
+              child: child,
+            ),
           );
         },
       ),
