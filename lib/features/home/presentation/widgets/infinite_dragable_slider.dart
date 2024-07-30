@@ -55,6 +55,7 @@ class _InfiniteDragableSliderState extends State<InfiniteDragableSlider>
   void animationListener() {
     if (controller.isCompleted) {
       setState(() {
+        // it help us make it infinite slide
         if (widget.itemCount == ++index) {
           index = 0;
         }
@@ -71,8 +72,15 @@ class _InfiniteDragableSliderState extends State<InfiniteDragableSlider>
   void initState() {
     index = widget.index;
     controller =
-        AnimationController(vsync: this, duration: kThemeAnimationDuration);
+        AnimationController(vsync: this, duration: kThemeAnimationDuration)
+          ..addListener(animationListener);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller..removeListener(animationListener);
+    super.dispose();
   }
 
   @override
@@ -81,6 +89,7 @@ class _InfiniteDragableSliderState extends State<InfiniteDragableSlider>
       children: List.generate(
         4,
         (stackIndex) {
+          final modIndex = (index + 3 - stackIndex) % widget.itemCount;
           return Transform.translate(
             offset: getOffset(stackIndex),
             child: Transform.scale(
@@ -89,7 +98,7 @@ class _InfiniteDragableSliderState extends State<InfiniteDragableSlider>
                 angle: getAngle(stackIndex),
                 child: DragableWidget(
                   onSlideOut: onSlideOut,
-                  child: widget.itemBuilder(context, stackIndex),
+                  child: widget.itemBuilder(context, modIndex),
                   isEnableDrag: stackIndex == 3,
                 ),
               ),
