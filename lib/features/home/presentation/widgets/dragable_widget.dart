@@ -58,13 +58,13 @@ class _DragableWidgetState extends State<DragableWidget>
     final velocitX = details.velocity.pixelsPerSecond.dx;
     final positionX = currentPosition.dx;
 
-    if (velocitX < -1000 || positionX < outSizeLimit) {
+    if (velocitX < -1000 || positionX < -outSizeLimit) {
+      itWasMadeSlide = widget.onSlideOut != null;
       widget.onSlideOut?.call(SlideDirection.left);
-      print('Slide left');
     }
-    if (velocitX < 1000) {
+    if (velocitX < 1000 || positionX > (screenSize.width - outSizeLimit)) {
+      itWasMadeSlide = widget.onSlideOut != null;
       widget.onSlideOut?.call(SlideDirection.right);
-      print('Slide right');
     }
     restoreController.forward();
   }
