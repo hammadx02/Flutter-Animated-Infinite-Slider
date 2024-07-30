@@ -45,6 +45,13 @@ class _DragableWidgetState extends State<DragableWidget>
     }
   }
 
+  void onPanEnd(DragEndDetails details) {
+    if (restoreController.isAnimating) {
+      return;
+    }
+    restoreController.forward();
+  }
+
   @override
   void initState() {
     restoreController =
@@ -68,6 +75,7 @@ class _DragableWidgetState extends State<DragableWidget>
     return GestureDetector(
       onPanStart: onPanStart,
       onPanUpdate: onPanUpdate,
+      onPanEnd: onPanEnd,
       child: Transform.translate(
         offset: panOffset,
         child: child,
