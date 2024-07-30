@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 enum SlideDirection { left, right }
 
@@ -27,7 +28,12 @@ class _DragableWidgetState extends State<DragableWidget>
   final _widgetKey = GlobalKey();
   Offset startOffset = Offset.zero;
   Offset panOffset = Offset.zero;
+  Size size = Size.zero;
   double angle = 0;
+
+  bool itWasMadeSlide = false;
+
+  double get outSizeLimit => size.width * 0.65;
 
   void onPanStart(DragStartDetails details) {
     if (!restoreController.isAnimating) {
@@ -49,6 +55,13 @@ class _DragableWidgetState extends State<DragableWidget>
     if (restoreController.isAnimating) {
       return;
     }
+    final velocitX = details.velocity.pixelsPerSecond.dx;
+    final positionX = currentPosition.dx;
+
+    if (velocitX < -1000 || positionX < outSizeLimit) {
+      widget.onSlideOut?.call(SlideDirection.left);
+      print('Slide left');
+    }
     restoreController.forward();
   }
 
@@ -60,17 +73,34 @@ class _DragableWidgetState extends State<DragableWidget>
     }
   }
 
+  void getChildSize() {
+    size =
+        (_widgetKey.currentContext?.findRenderObject() as RenderBox?)?.size ??
+            Size.zero;
+  }
+
+  Offset get currentPosition {
+    final renderBox =
+        _widgetKey.currentContext?.findRenderObject() as RenderBox?;
+    return renderBox?.localToGlobal(Offset.zero) ?? Offset.zero;
+  }
+
   @override
   void initState() {
     restoreController =
         AnimationController(vsync: this, duration: kThemeAnimationDuration)
           ..addListener(restoreAnimationListner);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getChildSize();
+    });
     super.initState();
   }
 
   @override
   void dispose() {
-    restoreController..removeListener(restoreAnimationListner)..dispose();
+    restoreController
+      ..removeListener(restoreAnimationListner)
+      ..dispose();
     super.dispose();
   }
 
