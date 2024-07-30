@@ -21,6 +21,14 @@ class InfiniteDragableSlider extends StatefulWidget {
 }
 
 class _InfiniteDragableSliderState extends State<InfiniteDragableSlider> {
+  Offset getOffset(int stackIndex) {
+    return {
+          0: Offset(-70, 30),
+          1: Offset(70, 30),
+        }[stackIndex] ??
+        Offset(0, 0);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -32,9 +40,9 @@ class _InfiniteDragableSliderState extends State<InfiniteDragableSlider> {
             child: Transform.scale(
               scale: 0.6,
               child: Transform.rotate(
-                angle: -pi * 0.1,
+                angle: -pi * 0.1, // 18 degree
                 child: MagazineCoverImage(
-                  magazine: Magazine.fakeMagazinesValues[0],
+                  magazine: widget.itemBuilder(context, stackIndex),
                 ),
               ),
             ),
