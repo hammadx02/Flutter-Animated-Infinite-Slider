@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:vice_app/core/shared/presentation/widgets/magazine_cover_image.dart';
+import 'package:vice_app/features/home/presentation/widgets/dragable_widget.dart';
 
 class InfiniteDragableSlider extends StatefulWidget {
   const InfiniteDragableSlider({
@@ -60,8 +60,9 @@ class _InfiniteDragableSliderState extends State<InfiniteDragableSlider> {
               scale: getScale(stackIndex),
               child: Transform.rotate(
                 angle: getAngle(stackIndex),
-                child: MagazineCoverImage(
-                  magazine: widget.itemBuilder(context, stackIndex),
+                child: DragableWidget(
+                  child: widget.itemBuilder(context, stackIndex),
+                  isEnableDrag: stackIndex == 3,
                 ),
               ),
             ),
