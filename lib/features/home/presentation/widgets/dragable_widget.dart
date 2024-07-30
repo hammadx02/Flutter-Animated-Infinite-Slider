@@ -28,10 +28,37 @@ class _DragableWidgetState extends State<DragableWidget>
   Offset startOffset = Offset.zero;
   Offset panOffset = Offset.zero;
   double angle = 0;
+
+  @override
+  void initState() {
+    restoreController =
+        AnimationController(vsync: this, duration: kThemeAnimationDuration);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    restoreController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: widget.child,
+      onPanStart: (details) {
+        setState(() {
+          startOffset = details.globalPosition;
+        });
+      },
+      onPanUpdate: (details) {
+        setState(() {
+          panOffset = details.globalPosition - startOffset;
+        });
+      },
+      child: Transform.translate(
+        offset: panOffset,
+        child: widget.child,
+      ),
     );
   }
 }
