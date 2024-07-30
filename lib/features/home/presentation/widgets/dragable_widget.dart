@@ -52,16 +52,25 @@ class _DragableWidgetState extends State<DragableWidget>
     restoreController.forward();
   }
 
+  void restoreAnimationListner() {
+    if (restoreController.isCompleted) {
+      restoreController.reset();
+      panOffset = Offset.zero;
+      setState(() {});
+    }
+  }
+
   @override
   void initState() {
     restoreController =
-        AnimationController(vsync: this, duration: kThemeAnimationDuration);
+        AnimationController(vsync: this, duration: kThemeAnimationDuration)
+          ..addListener(restoreAnimationListner);
     super.initState();
   }
 
   @override
   void dispose() {
-    restoreController.dispose();
+    restoreController..removeListener(restoreAnimationListner)..dispose();
     super.dispose();
   }
 
@@ -81,7 +90,7 @@ class _DragableWidgetState extends State<DragableWidget>
         builder: (context, child) {
           final value = 1 - restoreController.value;
           return Transform.translate(
-            offset: panOffset,
+            offset: panOffset * value,
             child: child,
           );
         },
